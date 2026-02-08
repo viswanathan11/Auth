@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 //dotenv module reads the env file and add those to the process.env of nodejs
 require("dotenv").config();
-
+require("./Models/db")
 const PORT = process.env.PORT;
 
 app.listen(PORT, () => {
