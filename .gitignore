@@ -12,3 +12,21 @@ yarn-error.log*
 
 # OS
 .DS_Store
+Thumbs.db
+
+# IDE/Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+
+# Build
+build/
+dist/
+coverage/
+
+# Cache
+.eslintcache
+.history/
