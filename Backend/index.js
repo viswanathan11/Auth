@@ -1,12 +1,14 @@
-const express = require("express");
+import express from "express"
+import "./db.js"
+import cors from "cors";
+import dotenv from "dotenv";
+import AuthRouter from "./Router/AuthRouter.js"
 const app = express();
-const cors = require("cors");
+
 //dotenv module reads the env file and add those to the process.env of nodejs
-require("dotenv").config();
-require("./Models/db");
+dotenv.config();
 
 // imports the Router class Objects which has defined the http methods
-const AuthRouter = require("./Router.js/AuthRouter");
 const PORT = process.env.PORT;
 
 //middleware//
@@ -21,7 +23,7 @@ app.use(express.json());
 app.use(cors());
 
 //router middleware
-app.use("/",AuthRouter);
+app.use("/api",AuthRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is Live On: http://localhost:${PORT}`);
