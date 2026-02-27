@@ -1,3 +1,4 @@
+import jwt from "jsonwebtoken";
 import userModel from "../Models/users.js";
 import bcrypt from "bcrypt";
 const signUp = async (req, res) => {
@@ -25,13 +26,21 @@ const signUp = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    const { email, password } = req.body();
+    const { email, password } = req.body;
     const user = await userModel.findOne({ email });
-
     if (!user) {
       return res
         .status(400)
         .json({ message: "Login Failed. \n Email or Password is Wrong " });
+    }
+    //wee neeed to verfy the password
+    const isPassword = await bcrypt.compare(password, user.password);
+    const isEmail = email === user.email ? true : false;
+
+    if (!isEmail) {
+      res.status(400).json({ message: "Incorrect email" });
+    } else if (!isPassword) {
+      res.status(400).json({ message: "Password incorrect" });
     } else {
       res.status(200).json({
         message: "Logind Successfully",
