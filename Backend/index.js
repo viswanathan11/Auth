@@ -3,6 +3,7 @@ import "./db.js"
 import cors from "cors";
 import dotenv from "dotenv";
 import AuthRouter from "./Router/AuthRouter.js"
+import ProductRouter from "./Router/ProductRouter.js"
 const app = express();
 
 //dotenv module reads the env file and add those to the process.env of nodejs
@@ -25,6 +26,8 @@ app.use(cors());
 //router middleware
 app.use("/api",AuthRouter);
 
+//this is an authenticated api
+app.use("/products",ProductRouter);
 app.listen(PORT, () => {
   console.log(`Server is Live On: http://localhost:${PORT}`);
 });

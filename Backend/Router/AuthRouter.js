@@ -17,8 +17,8 @@ router.get("/Products", (req, res) => {
 
 //ok this is an middleware chaining
 router.post('/signup',signupValidation,signUp);
-// exporting the router objects which has the http methods and how it is handeled
-export default router;
-
 
 router.post('/login',loginValidation,login);
+
+// exporting the router objects which has the http methods and how it is handeled
+export default router;

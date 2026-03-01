@@ -1,6 +1,9 @@
 import jwt from "jsonwebtoken";
 import userModel from "../Models/users.js";
 import bcrypt from "bcrypt";
+import dotenv from "dotenv";
+
+dotenv.config();
 const signUp = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -20,7 +23,7 @@ const signUp = async (req, res) => {
       res.status(201).json({ message: "Sign up Success", success: true });
     }
   } catch (err) {
-    res.status(500).json({ message: "Internal server error", success: false });
+    return res.status(500).json({ message: "Internal server error", success: false });
   }
 };
 
@@ -35,20 +38,26 @@ const login = async (req, res) => {
     }
     //wee neeed to verfy the password
     const isPassword = await bcrypt.compare(password, user.password);
-    const isEmail = email === user.email ? true : false;
-
-    if (!isEmail) {
-      res.status(400).json({ message: "Incorrect email" });
-    } else if (!isPassword) {
-      res.status(400).json({ message: "Password incorrect" });
+   
+ 
+    if (!isPassword) {
+      return res.status(400).json({ message: "Password incorrect" });
     } else {
-      res.status(200).json({
+      const token = jwt.sign(
+        { id: user._id, email: user.email },
+        process.env.JWT_SECRETE_KEY,
+        { expiresIn: "24h" },
+      );
+      return res.status(200).json({
         message: "Logind Successfully",
+        name:user.name,
+        email:user.email,
         success: true,
+        token: token,
       });
     }
   } catch (err) {
-    res.status(500).json({
+    return res.status(500).json({
       message: "Integernal Server error",
       success: false,
     });
