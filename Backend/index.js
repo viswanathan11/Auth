@@ -21,7 +21,7 @@ app.use(express.json());
 // server : 8080
 //clint:3000
 // so we need cros origin comunication between client and server
-app.use(cors());
+app.use(cors({origin:"http://localhost:3000"}));
 
 //router middleware
 app.use("/api",AuthRouter);
