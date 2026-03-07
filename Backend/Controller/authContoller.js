@@ -34,7 +34,7 @@ const login = async (req, res) => {
     if (!user) {
       return res
         .status(400)
-        .json({ message: "Login Failed. \n Email or Password is Wrong " });
+        .json({ message: "Login Failed. \nplease sign in" });
     }
     //wee neeed to verfy the password
     const isPassword = await bcrypt.compare(password, user.password);
@@ -44,7 +44,7 @@ const login = async (req, res) => {
       return res.status(400).json({ message: "Password incorrect" });
     } else {
       const token = jwt.sign(
-        { id: user._id, email: user.email },
+        { id: user._id,email: user.email },
         process.env.JWT_SECRETE_KEY,
         { expiresIn: "24h" },
       );
