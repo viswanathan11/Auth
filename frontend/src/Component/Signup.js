@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { handleError, handleSuccess } from "../util";
 const Signup = () => {
@@ -9,6 +9,7 @@ const Signup = () => {
     password: "",
   });
 
+  const nvigate = useNavigate();
   const handleChange = (e) => {
     const { name, value } = e.target;
     console.log(`${name} : ${value}`);
@@ -19,39 +20,43 @@ const Signup = () => {
     }));
   };
 
-  const handleSignUp=async (e)=>{
+  const handleSignUp = async (e) => {
     e.preventDefault();
-    const {name,email,password} = signupInfo
-    if(!name || !email||!password){
-      return handleError("name, email and password are required")
+    const { name, email, password } = signupInfo;
+    if (!name || !email || !password) {
+      return handleError("name, email and password are required");
     }
 
-    try{
-      const url="http://localhost:8080/api/signup"
+    try {
+      const url = "http://localhost:8080/api/signup";
 
-      const response =await fetch(url,{
-        method:"POST",
-        headers:{
-          "Content-Type":"application/json"
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-        body:JSON.stringify(signupInfo) 
-      })
+        body: JSON.stringify(signupInfo),
+      });
 
-      const res=await response.json();
-      const{message,success}=res;
-      console.log(res)
-      if(success){
-        return handleSuccess(message);
-      }else{
-        return handleError(message);
+      const res = await response.json();
+      console.log(res);
+      const { message, success, error } = res;
+      console.log(res);
+      if (success) {
+        handleSuccess(message);
+        setTimeout(() => {
+          nvigate("/login");
+        }, 1000);
+        return;
+      } else if (error) {
+        return handleError(error.details[0].message);
+      } else if (!success) {
+        return handleError(error.details[0].message);
       }
-      
-    }catch(err){
-      return handleError(err)
+    } catch (err) {
+      return handleError(err);
     }
-
-
-  }
+  };
   return (
     <div className="container">
       <h1>Sign Up</h1>
@@ -91,7 +96,9 @@ const Signup = () => {
           ></input>
         </div>
         <div className="button">
-          <button className="submitbtn"type="submit">Signup</button>
+          <button className="submitbtn" type="submit">
+            Signup
+          </button>
         </div>
         <span>
           Already have an account? <Link to="/login">Login</Link>
