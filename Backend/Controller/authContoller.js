@@ -34,7 +34,7 @@ const login = async (req, res) => {
     if (!user) {
       return res
         .status(400)
-        .json({ message: "Login Failed. \n Email or Password is Wrong " });
+        .json({ message: "Login Failed. \nplease sign in" });
     }
     //wee neeed to verfy the password
     const isPassword = await bcrypt.compare(password, user.password);
