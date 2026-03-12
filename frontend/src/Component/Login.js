@@ -57,7 +57,9 @@ const Login = () => {
       } else {
         handleError(message);
       }
-    } catch (error) {}
+    } catch (error) {
+      handleError(error)
+    }
   };
 
   return (
