@@ -28,7 +28,7 @@ const Signup = () => {
     }
 
     try {
-      const url = "http://localhost:8080/api/signup";
+      const url = `${process.env.REACT_APP_API_URL}/api/signup`;
 
       const response = await fetch(url, {
         method: "POST",
@@ -39,9 +39,8 @@ const Signup = () => {
       });
 
       const res = await response.json();
-      console.log(res);
+     
       const { message, success, error } = res;
-      console.log(res);
       if (success) {
         handleSuccess(message);
         setTimeout(() => {
