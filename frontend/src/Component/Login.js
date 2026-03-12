@@ -36,7 +36,7 @@ const Login = () => {
         return;
       }
 
-      const login = await fetch("http://localhost:8080/api/login", {
+      const login = await fetch(`${process.env.REACT_APP_API_URL}/api/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -45,7 +45,6 @@ const Login = () => {
       });
 
       const response = await login.json();
-      console.log(response);
       const { success, message, token, name } = response;
 
       if (success) {
@@ -58,7 +57,9 @@ const Login = () => {
       } else {
         handleError(message);
       }
-    } catch (error) {}
+    } catch (error) {
+      handleError(error)
+    }
   };
 
   return (
